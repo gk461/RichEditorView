@@ -27,6 +27,9 @@ import UIKit
     
     /// Called when the Insert Table toolbar item is pressed
     @objc optional func richEditorToolbarInsertTable(_ toolbar: RichEditorToolbar)
+    
+    /// Called when the done toolbar item is pressed
+    @objc optional func richEditorToolbarDoneAction(_ toolbar: RichEditorToolbar)
 }
 
 /// RichBarButtonItem is a subclass of UIBarButtonItem that takes a callback as opposed to the target-action pattern

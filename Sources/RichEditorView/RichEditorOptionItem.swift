@@ -76,10 +76,12 @@ public enum RichEditorDefaultOption: RichEditorOption {
     case video
     case link
     case table
+    case done
     
     public static let all: [RichEditorDefaultOption] = [
         //.clear,
         //.undo, .redo,
+        .done,
         .bold, .italic, .underline,
         .checkbox, .subscript, .superscript, .strike,
         .textColor, .textBackgroundColor,
@@ -116,6 +118,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         case .video: name = "insert_video"
         case .link: name = "insert_link"
         case .table: name = "insert_table"
+        case .done: name = "done"
         }
         
         return UIImage(named: name, in: .module, compatibleWith: nil)
@@ -147,6 +150,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         case .video: return NSLocalizedString("Video", comment: "")
         case .link: return NSLocalizedString("Link", comment: "")
         case .table: return NSLocalizedString("Table", comment: "")
+        case .done: return NSLocalizedString("Done", comment: "")
         }
     }
     
@@ -176,6 +180,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         case .video: toolbar.delegate?.richEditorToolbarInsertVideo?(toolbar)
         case .link: toolbar.delegate?.richEditorToolbarInsertLink?(toolbar)
         case .table: toolbar.delegate?.richEditorToolbarInsertTable?(toolbar)
+        case .done: toolbar.delegate?.richEditorToolbarDoneAction?(toolbar)
         }
     }
 }
