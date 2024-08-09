@@ -55,14 +55,16 @@ import UIKit
     }
 }
 
+
+open enum IconPlacement {
+    case left
+    case right
+}
+
+
 /// RichEditorToolbar is UIView that contains the toolbar for actions that can be performed on a RichEditorView
 @objcMembers open class RichEditorToolbar: UIView {
 
-    open enum IconPlacement {
-        case left
-        case right
-    }
-    
     /// The delegate to receive events that cannot be automatically completed
     open weak var delegate: RichEditorToolbarDelegate?
 
