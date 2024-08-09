@@ -86,6 +86,7 @@ import UIKit
         toolbarScroll = UIScrollView()
         toolbar = UIToolbar()
         backgroundToolbar = UIToolbar()
+        doneToolbar = UIToolbar()
         super.init(frame: frame)
         setup()
     }
@@ -94,6 +95,7 @@ import UIKit
         toolbarScroll = UIScrollView()
         toolbar = UIToolbar()
         backgroundToolbar = UIToolbar()
+        doneToolbar = UIToolbar()
         super.init(coder: aDecoder)
         setup()
     }
@@ -125,14 +127,14 @@ import UIKit
 
         addSubview(backgroundToolbar)
         addSubview(toolbarScroll)
-        addSubView(doneToolbar)
+        addSubview(doneToolbar)
         updateToolbar()
     }
     
     private func updateToolbar() {
         var buttons = [UIBarButtonItem]()
         
-        let doneOption = options.first(where: { $0.title == RichEditorDefaultOption.done.title})
+        
         options.removeAll(where: { $0.title == RichEditorDefaultOption.done.title})
         
         let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
@@ -155,7 +157,14 @@ import UIKit
         }
         toolbar.items = buttons
         
-        doneToolbar.items = [doneOption]
+        if let doneOption = options.first(where: { $0.title == RichEditorDefaultOption.done.title}) {
+            let handler = { [weak self] in
+                if let strongSelf = self {
+                    doneOption.action(strongSelf)
+                }
+            }
+            doneToolbar.items = [RichBarButtonItem(title: doneOption.title, handler: handler)]
+        }
         
         let defaultIconWidth: CGFloat = 28
         let barButtonItemMargin: CGFloat = 12
