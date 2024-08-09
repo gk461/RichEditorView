@@ -71,9 +71,10 @@ import UIKit
         }
     }
 
-    open var isDoneButtonHidden: Bool {
-        get { true }
-        set { doneButton.isHidden = newValue }
+    open var isDoneButtonHidden: Bool = true {
+        didSet {
+            doneButton.isHidden = isDoneButtonHidden
+        }
     }
     
     /// The tint color to apply to the toolbar background.
@@ -137,6 +138,7 @@ import UIKit
             doneButton.widthAnchor.constraint(equalToConstant: 70)
         ])
         
+        doneButton.isHidden = isDoneButtonHidden
         updateToolbar()
     }
     
@@ -185,7 +187,7 @@ import UIKit
        
         doneButton.setTitle("Done", for: .normal)
         doneButton.addTarget(self, action: #selector(btnDoneAction), for: .touchUpInside)
-        doneButton.tintColor = barTintColor
+        doneButton.setTitleColor(tintColor, for: .normal)
         
     }
     
