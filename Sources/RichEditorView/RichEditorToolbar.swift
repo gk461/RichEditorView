@@ -56,7 +56,7 @@ import UIKit
 }
 
 
-open enum IconPlacement {
+public enum IconPlacement {
     case left
     case right
 }
