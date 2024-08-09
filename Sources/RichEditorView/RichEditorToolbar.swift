@@ -71,6 +71,11 @@ import UIKit
         }
     }
 
+    open var isDoneButtonHidden: Bool {
+        get { true }
+        set { doneButton.isHidden = newValue }
+    }
+    
     /// The tint color to apply to the toolbar background.
     open var barTintColor: UIColor? {
         get { return backgroundColor }
@@ -78,7 +83,7 @@ import UIKit
     }
 
     private var toolbarScroll: UIScrollView
-    open var doneButton: UIButton
+    private var doneButton: UIButton
     private var toolbar: UIToolbar
     
     public override init(frame: CGRect) {
