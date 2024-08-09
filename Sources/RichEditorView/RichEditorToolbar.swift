@@ -78,7 +78,7 @@ import UIKit
     }
 
     private var toolbarScroll: UIScrollView
-    var doneButton: UIButton
+    open var doneButton: UIButton
     private var toolbar: UIToolbar
     
     public override init(frame: CGRect) {
@@ -180,7 +180,7 @@ import UIKit
        
         doneButton.setTitle("Done", for: .normal)
         doneButton.addTarget(self, action: #selector(btnDoneAction), for: .touchUpInside)
-        doneButton.tintColor = tintColor
+        doneButton.tintColor = barTintColor
         
     }
     
