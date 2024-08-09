@@ -138,7 +138,7 @@ import UIKit
         
         
         if options.count == 1 {
-            let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+            let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
             buttons.append(flexSpace)
             for option in options {
                 let handler = { [weak self] in
