@@ -73,29 +73,26 @@ import UIKit
 
     /// The tint color to apply to the toolbar background.
     open var barTintColor: UIColor? {
-        get { return backgroundToolbar.barTintColor }
-        set { backgroundToolbar.barTintColor = newValue }
+        get { return backgroundColor }
+        set { backgroundColor = newValue }
     }
 
     private var toolbarScroll: UIScrollView
+    var doneButton: UIButton
     private var toolbar: UIToolbar
-    private var backgroundToolbar: UIToolbar
-    private var doneToolbar: UIToolbar
     
     public override init(frame: CGRect) {
         toolbarScroll = UIScrollView()
+        doneButton = UIButton()
         toolbar = UIToolbar()
-        backgroundToolbar = UIToolbar()
-        doneToolbar = UIToolbar()
         super.init(frame: frame)
         setup()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         toolbarScroll = UIScrollView()
+        doneButton = UIButton()
         toolbar = UIToolbar()
-        backgroundToolbar = UIToolbar()
-        doneToolbar = UIToolbar()
         super.init(coder: aDecoder)
         setup()
     }
@@ -104,40 +101,43 @@ import UIKit
         autoresizingMask = .flexibleWidth
         backgroundColor = .clear
 
-        backgroundToolbar.frame = bounds
-        backgroundToolbar.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-
+        toolbarScroll.translatesAutoresizingMaskIntoConstraints = false
+        toolbarScroll.showsHorizontalScrollIndicator = false
+        toolbarScroll.showsVerticalScrollIndicator = false
+        toolbarScroll.backgroundColor = .clear
+        
         toolbar.autoresizingMask = .flexibleWidth
         toolbar.backgroundColor = .clear
         toolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
         toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
         
-        doneToolbar.autoresizingMask = .flexibleWidth
-        doneToolbar.backgroundColor = .clear
-        doneToolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-        doneToolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-
-        toolbarScroll.frame = bounds
-        toolbarScroll.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        toolbarScroll.showsHorizontalScrollIndicator = false
-        toolbarScroll.showsVerticalScrollIndicator = false
-        toolbarScroll.backgroundColor = .clear
-
-        toolbarScroll.addSubview(toolbar)
-
-        addSubview(backgroundToolbar)
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.distribution = .fillProportionally
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(doneButton)
         addSubview(toolbarScroll)
-        addSubview(doneToolbar)
+        addSubview(stackView)
+        toolbarScroll.addSubview(toolbar)
+        
+        NSLayoutConstraint.activate([
+            toolbarScroll.topAnchor.constraint(equalTo: topAnchor),
+            toolbarScroll.leadingAnchor.constraint(equalTo: leadingAnchor),
+            toolbarScroll.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: toolbarScroll.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            doneButton.widthAnchor.constraint(equalToConstant: 70)
+        ])
+        
         updateToolbar()
     }
     
     private func updateToolbar() {
+        
         var buttons = [UIBarButtonItem]()
-        
-        
-        options.removeAll(where: { $0.title == RichEditorDefaultOption.done.title})
-        
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         
         for option in options {
             let handler = { [weak self] in
@@ -155,16 +155,8 @@ import UIKit
                 buttons.append(button)
             }
         }
-        toolbar.items = buttons
         
-        if let doneOption = options.first(where: { $0.title == RichEditorDefaultOption.done.title}) {
-            let handler = { [weak self] in
-                if let strongSelf = self {
-                    doneOption.action(strongSelf)
-                }
-            }
-            doneToolbar.items = [RichBarButtonItem(title: doneOption.title, handler: handler)]
-        }
+        toolbar.items = buttons
         
         let defaultIconWidth: CGFloat = 28
         let barButtonItemMargin: CGFloat = 12
@@ -184,6 +176,17 @@ import UIKit
         toolbar.frame.size.height = 44
         toolbarScroll.contentSize.width = width
         
+        let doneOption = RichEditorDefaultOption.done
+       
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.addTarget(self, action: #selector(btnDoneAction), for: .touchUpInside)
+        doneButton.tintColor = tintColor
+        
+    }
+    
+    @objc func btnDoneAction() {
+        RichEditorDefaultOption.done.action(self)
     }
     
 }
+
