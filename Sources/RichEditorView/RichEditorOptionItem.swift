@@ -77,11 +77,13 @@ public enum RichEditorDefaultOption: RichEditorOption {
     case link
     case table
     case done
+    case flex
     
     public static let all: [RichEditorDefaultOption] = [
         //.clear,
         //.undo, .redo,
         .done,
+        .flex,
         .bold, .italic, .underline,
         .checkbox, .subscript, .superscript, .strike,
         .textColor, .textBackgroundColor,
@@ -119,6 +121,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         case .link: name = "insert_link"
         case .table: name = "insert_table"
         case .done: name = "done"
+        case .flex: name = ""
         }
         
         return UIImage(named: name, in: .module, compatibleWith: nil)
@@ -151,6 +154,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         case .link: return NSLocalizedString("Link", comment: "")
         case .table: return NSLocalizedString("Table", comment: "")
         case .done: return NSLocalizedString("Done", comment: "")
+        case .flex: return ""
         }
     }
     
@@ -181,6 +185,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         case .link: toolbar.delegate?.richEditorToolbarInsertLink?(toolbar)
         case .table: toolbar.delegate?.richEditorToolbarInsertTable?(toolbar)
         case .done: toolbar.delegate?.richEditorToolbarDoneAction?(toolbar)
+        case .flex: break
         }
     }
 }
