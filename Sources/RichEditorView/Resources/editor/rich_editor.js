@@ -100,7 +100,7 @@ RE.setHtml = function(contents) {
     var tempWrapper = document.createElement('div');
     tempWrapper.innerHTML = contents;
     var images = tempWrapper.querySelectorAll("img");
-    
+
     for (var i = 0; i < images.length; i++) {
         images[i].onload = RE.updateHeight;
     }
