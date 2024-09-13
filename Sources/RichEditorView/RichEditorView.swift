@@ -126,6 +126,7 @@ public class RichEditorWebView: WKWebView {
         }
     }
     
+    
     // MARK: Initialization
     
     public override init(frame: CGRect) {
