@@ -79,10 +79,6 @@ video {
     height: auto !important;
 }
 
-image {
-    width: 100% !important;
-}
-
 table {
     overflow-x: scroll;
     width: 100% !important;
