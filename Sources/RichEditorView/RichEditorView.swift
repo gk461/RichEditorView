@@ -9,7 +9,8 @@ import UIKit
 import WebKit
 
 /// RichEditorDelegate defines callbacks for the delegate of the RichEditorView
-@objc public protocol RichEditorDelegate: class {
+@MainActor
+@objc public protocol RichEditorDelegate {
     /// Called when the inner height of the text being displayed changes
     /// Can be used to update the UI
     @objc optional func richEditor(_ editor: RichEditorView, heightDidChange height: Int)

@@ -8,7 +8,8 @@ import UIKit
 
 /// RichEditorToolbarDelegate is a protocol for the RichEditorToolbar.
 /// Used to receive actions that need extra work to perform (eg. display some UI)
-@objc public protocol RichEditorToolbarDelegate: class {
+@MainActor
+@objc public protocol RichEditorToolbarDelegate {
 
     /// Called when the Text Color toolbar item is pressed.
     @objc optional func richEditorToolbarChangeTextColor(_ toolbar: RichEditorToolbar)

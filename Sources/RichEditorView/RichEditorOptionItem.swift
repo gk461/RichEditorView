@@ -8,6 +8,7 @@ import UIKit
 
 /// A RichEditorOption object is an object that can be displayed in a RichEditorToolbar.
 /// This protocol is proviced to allow for custom actions not provided in the RichEditorOptions enum.
+@MainActor
 public protocol RichEditorOption {
 
     /// The image to be displayed in the RichEditorToolbar.
@@ -25,6 +26,7 @@ public protocol RichEditorOption {
 
 /// RichEditorOptionItem is a concrete implementation of RichEditorOption.
 /// It can be used as a configuration object for custom objects to be shown on a RichEditorToolbar.
+@MainActor
 public struct RichEditorOptionItem: RichEditorOption {
 
     /// The image that should be shown when displayed in the RichEditorToolbar.
@@ -154,6 +156,7 @@ public enum RichEditorDefaultOption: RichEditorOption {
         }
     }
     
+    @MainActor
     public func action(_ toolbar: RichEditorToolbar) {
         switch self {
         case .clear: toolbar.editor?.removeFormat()
