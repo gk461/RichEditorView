@@ -107,14 +107,20 @@ import UIKit
     private func setup() {
         autoresizingMask = .flexibleWidth
         backgroundColor = .clear
+        layer.masksToBounds = false
 
         toolbarScroll.translatesAutoresizingMaskIntoConstraints = false
         toolbarScroll.showsHorizontalScrollIndicator = false
         toolbarScroll.showsVerticalScrollIndicator = false
         toolbarScroll.backgroundColor = .clear
+        toolbarScroll.clipsToBounds = false
+        toolbarScroll.layer.masksToBounds = false
         
         toolbar.autoresizingMask = .flexibleWidth
         toolbar.backgroundColor = .clear
+        toolbar.clipsToBounds = false
+        toolbar.layer.masksToBounds = false
+        
         toolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
         toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
         
@@ -166,23 +172,9 @@ import UIKit
         
         toolbar.items = buttons
         
-        let defaultIconWidth: CGFloat = 28
-        let barButtonItemMargin: CGFloat = 12
-        let width: CGFloat = buttons.reduce(0) {sofar, new in
-            if let view = new.value(forKey: "view") as? UIView {
-                return sofar + view.frame.size.width + barButtonItemMargin
-            } else {
-                return sofar + (defaultIconWidth + barButtonItemMargin)
-            }
-        }
-        
-        if width < frame.size.width {
-            toolbar.frame.size.width = frame.size.width + barButtonItemMargin
-        } else {
-            toolbar.frame.size.width = width + barButtonItemMargin
-        }
-        toolbar.frame.size.height = 44
-        toolbarScroll.contentSize.width = width
+        // Size toolbar by asking it to fit its items, then update frames in layoutSubviews
+        toolbar.sizeToFit()
+        setNeedsLayout()
         
         let doneOption = RichEditorDefaultOption.done
        
@@ -196,5 +188,35 @@ import UIKit
         RichEditorDefaultOption.done.action(self)
     }
     
-}
+    open override func layoutSubviews() {
+        super.layoutSubviews()
 
+        // Ensure the toolbar sizes to its content and then adjust frames accordingly
+        toolbar.sizeToFit()
+
+        let barButtonItemMargin: CGFloat = 12
+        let contentWidth = (toolbar.items ?? []).reduce(0) { sofar, item in
+            // Try to use the item's view if available; otherwise fallback to a reasonable width
+            if let view = item.value(forKey: "view") as? UIView, view.bounds.width > 0 {
+                return sofar + view.bounds.width + barButtonItemMargin
+            } else {
+                // Use the toolbar's average item width if possible, otherwise default
+                let defaultIconWidth: CGFloat = 28
+                return sofar + defaultIconWidth + barButtonItemMargin
+            }
+        }
+
+        // Place the toolbar at origin within the scroll view
+        let height: CGFloat = 44
+        let widthToUse = max(bounds.width, contentWidth + barButtonItemMargin)
+
+        toolbar.frame = CGRect(x: 0, y: 0, width: widthToUse, height: height)
+        toolbarScroll.contentSize = CGSize(width: widthToUse, height: height)
+        let horizontalInset: CGFloat = 16
+        toolbarScroll.contentInset = UIEdgeInsets(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
+        toolbarScroll.clipsToBounds = false
+        
+        clipsToBounds = false
+    }
+    
+}
